@@ -1,5 +1,9 @@
+
+<!--animal-form></animal-form-->
+<animal-form-reactive></animal-form-reactive>
+
 <div class="card-deck">
-  <animal *ngFor="let animal of animals;" [data]="animal" (onDelete)="onDelete($event)"></animal>
+    <animal highlight color="red" *ngFor="let animal of animals;" [data]="animal" (onDelete)="onDelete($event)"></animal>
 </div>
 
 <table class="table">

@@ -1,0 +1,67 @@
+
+<form #form="ngForm" (ngSubmit)="save(form.value)">
+    <div class="form-group" >
+        <div class="form-group" [class.has-danger]="nameModel.dirty && nameModel.invalid">
+            <label>Name</label>
+            <input type="text"
+                   id="name"
+                   name="name"
+                   class="form-control"
+                   [class.form-control-danger]="nameModel.dirty && nameModel.invalid"
+                   [ngModel]="animal?.name"
+                   #nameModel="ngModel"
+                   minlength="5"
+                   required
+            >
+            <div class="form-control-feedback" *ngIf="nameModel.dirty && nameModel.control?.errors?.required">Required field</div>
+            <div class="form-control-feedback" *ngIf="nameModel.dirty && nameModel.control?.errors?.minlength">Required length of 5</div>
+        </div>
+        <div class="form-group" [class.has-danger]="imageModel.dirty && imageModel.invalid">
+            <label>Image</label>
+            <input type="text"
+                   id="image"
+                   name="image"
+                   class="form-control"
+                   [class.form-control-danger]="imageModel.dirty && imageModel.invalid"
+                   [ngModel]="animal?.image"
+                   #imageModel="ngModel"
+                   required
+            >
+            <div class="form-control-feedback" *ngIf="imageModel.dirty && imageModel.control?.errors?.required">Required field</div>
+        </div>
+        <div class="form-group" [class.has-danger]="typeModel.dirty && typeModel.invalid">
+            <label>Type</label>
+            <select id="type"
+                    name="type"
+                    class="form-control"
+                    [class.form-control-danger]="typeModel.dirty && typeModel.invalid"
+                    [ngModel]="animal?.type"
+                    #typeModel="ngModel"
+                    required
+            >
+                <option *ngFor="let type of types;" [value]="type">{{type}}</option>
+            </select>
+            <div class="form-control-feedback" *ngIf="typeModel.dirty && typeModel.control?.errors?.required">Required field</div>
+        </div>
+
+        <div class="input-group">
+            <!--input type="text" value="pep" #myInput />
+            <button (click)="show(myInput.value)">Click</button>
+            <span>{{myInput?.value}}</span-->
+            <label>Birth date</label>
+            <input id="birthDate"
+                   name="birthDate"
+                   class="form-control"
+                   placeholder="yyyy-mm-dd"
+                   [ngModel]="animal?.birthDate"
+                   ngbDatepicker
+                   #birthDateRef="ngbDatepicker"
+            >
+            <div class="input-group-addon" (click)="birthDateRef.toggle()" >
+                <img src="https://ng-bootstrap.github.io/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+    </div>
+</form>

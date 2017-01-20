@@ -1,0 +1,59 @@
+
+<form [formGroup]="form" (ngSubmit)="save(form.value)">
+    <div class="form-group" >
+        <div class="form-group" [class.has-danger]="form.controls.name.dirty && form.controls.name.invalid">
+            <label>Name</label>
+            <input type="text"
+                   id="name"
+                   name="name"
+                   class="form-control"
+                   [class.form-control-danger]="form.controls.name.dirty && form.controls.name.invalid"
+                   formControlName="name"
+            >
+            <div class="form-control-feedback" *ngIf="form.controls.name.dirty && form.controls.name.errors?.required">Required field</div>
+            <div class="form-control-feedback" *ngIf="form.controls.name.dirty && form.controls.name.errors?.minlength">Required length of 5</div>
+        </div>
+        <div class="form-group" [class.has-danger]="form.controls.image.dirty && form.controls.image.invalid">
+            <label>Image</label>
+            <input type="text"
+                   id="image"
+                   name="image"
+                   class="form-control"
+                   [class.form-control-danger]="form.controls.image.dirty && form.controls.image.invalid"
+                   formControlName="image"
+            >
+            <div class="form-control-feedback" *ngIf="form.controls.image.dirty && form.controls.image.errors?.required">Required field</div>
+        </div>
+        <div class="form-group" [class.has-danger]="form.controls.type.dirty && form.controls.type.invalid">
+            <label>Type</label>
+            <select id="type"
+                    name="type"
+                    class="form-control"
+                    [class.form-control-danger]="form.controls.type.dirty && form.controls.type.invalid"
+                    formControlName="type"
+            >
+                <option *ngFor="let type of types;" [value]="type">{{type}}</option>
+            </select>
+            <div class="form-control-feedback" *ngIf="form.controls.type.dirty && form.controls.type.errors?.required">Required field</div>
+        </div>
+
+        <div class="input-group">
+            <!--input type="text" value="pep" #myInput />
+            <button (click)="show(myInput.value)">Click</button>
+            <span>{{myInput?.value}}</span-->
+            <label>Birth date</label>
+            <input id="birthDate"
+                   name="birthDate"
+                   class="form-control"
+                   placeholder="yyyy-mm-dd"
+                   formControlName="birthDate"
+                   ngbDatepicker
+            >
+            <div class="input-group-addon" (click)="birthDateRef.toggle()" >
+                <img src="https://ng-bootstrap.github.io/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+    </div>
+</form>
