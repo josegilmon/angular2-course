@@ -1,7 +1,7 @@
 /**
  * Created by jagil on 20/01/2017.
  */
-import {Component, OnInit} from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 
 import { Animal } from "../../models/animal.model";
@@ -19,22 +19,26 @@ import { Animal } from "../../models/animal.model";
 })
 export class AnimalFormReactiveComponent implements OnInit {
 
-    types: string[] = ['Perrete', 'Gatico', 'Pez'];
-    animal: Animal;
+    types: string[] = ['Perrete', 'Gatico', 'Pez', 'Otro'];
+    animal: Animal = new Animal(0, 'Fresquita', 'http://www.focaswiki.com/Imagenes/adorable-bebe-foca.jpg', new Date('2016-05-07'), 'Otro');
 
     form: FormGroup;
 
+    @Output() onSave = new EventEmitter();
+
     constructor(private formBuilder: FormBuilder) {}
 
-    save(value: Animal) {
-        console.log(value);
+    save(animal: any) {
+        console.log(animal);
+        if (animal.birthDate) animal.birthDate = new Date(animal.birthDate.year, animal.birthDate.month - 1, animal.birthDate.day);
+        this.onSave.emit(animal);
     }
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            name: ['', [Validators.required, Validators.minLength(5)]],
-            image: ['', Validators.required],
-            type: ['', Validators.required],
+            name: ['Fresquita', [Validators.required, Validators.minLength(5)]],
+            image: ['http://www.focaswiki.com/Imagenes/adorable-bebe-foca.jpg', Validators.required],
+            type: ['Otro', Validators.required],
             birthDate: ['']
         });
     }

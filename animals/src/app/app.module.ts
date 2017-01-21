@@ -13,6 +13,9 @@ import { HighLightDirective } from './shared/highlight.direcive';
 
 import { LimitTextPipe } from "./shared/limit-text.pipe";
 
+import { AnimalService } from "./services/animal.service";
+import { API_URL_OPAQUE } from "./config";
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -29,7 +32,16 @@ import { LimitTextPipe } from "./shared/limit-text.pipe";
         HttpModule,
         NgbModule.forRoot()
     ],
-    providers: [],
-    bootstrap: [AppComponent]
+    providers: [
+        // There is three ways to declare a service
+        AnimalService,
+        //{ provide: AnimalService, useClass: AnimalService },    // Uses a new instance of AnimalService
+        //{ provide: AnimalService, useExisting: AnimalService }, // Uses the same instance of AnimalService
+        // In this way we can use interfaces to easily update our service definitions
+        //{ provide: LoggerService, useClass: ConsoleLoggerService },
+        //{ provide: LoggerService, useClass: FileLoggerService },
+        { provide: API_URL_OPAQUE, useValue: 'http://192.168.100.52:3000/api/animal' },
+    ],
+bootstrap: [AppComponent]
 })
 export class AppModule { }

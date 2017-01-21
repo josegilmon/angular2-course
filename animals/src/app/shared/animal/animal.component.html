@@ -1,4 +1,4 @@
-<div class="card" style="width: 20rem;">
+<div class="card" style="width: 20rem; overflow-x: hidden">
   <img class="card-img-top" [src]="data.image" alt="Foto del {{name}}">
   <div class="card-block">
     <h4 class="card-title">{{ data.name | limitText: 6 }}</h4>
@@ -6,7 +6,7 @@
       <li class="list-group-item" *ngIf="data.age" >Age: {{data.age}}</li>
       <li class="list-group-item">Type: {{data.type}}</li>
         <li class="list-group-item">Born: {{data.birthDate | date: formatDate}}</li>
-        <li class="list-group-item">Color: {{color}}</li>
+        <!--li class="list-group-item">Color: {{color}}</li-->
     </ul>
     <div class="text-center">
       <a href="#" class="btn btn-primary" (click)="delete($event)">Delete</a>
