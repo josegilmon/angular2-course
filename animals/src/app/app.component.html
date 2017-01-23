@@ -1,12 +1,12 @@
 
 <!--animal-form></animal-form-->
-<animal-form-reactive (onSave)="onSave($event)"></animal-form-reactive>
+<animal-form-reactive (onSave)="onSave($event)" [data]="animalEdit"></animal-form-reactive>
 
 <div class="card-deck">
-    <animal highlight color="lightblue" *ngFor="let animal of animals;" [data]="animal" (onDelete)="onDelete($event)"></animal>
+    <animal *ngFor="let animal of animals;" [data]="animal" (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></animal>
 </div>
 
-<table class="table">
+<!--table class="table">
   <thead>
     <tr>
       <th></th>
@@ -15,10 +15,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let animal of animals; let i = index; let odd = odd;" [class.impar]="odd" [class.par]="!odd">
+    <tr *ngFor="let animal of animals | async; let i = index; let odd = odd;" [class.impar]="odd" [class.par]="!odd">
       <td>{{i+1}}</td>
       <td>{{animal.name}}</td>
       <td>{{animal.age}}</td>
     </tr>
   </tbody>
-</table>
+</table-->

@@ -12,17 +12,19 @@ import { Animal } from '../../models/animal.model';
 })
 export class AnimalComponent {
 
-  @Input() data: Animal;
-  //@Input() data: any; // Some data wich will be passed as parameter to the component in the 'inputs' array
-    @Input() color: string;
+    @Input() data: Animal;
 
-  @Output() onDelete = new EventEmitter();
+    @Output() onEdit: EventEmitter<Animal> = new EventEmitter();
+    @Output() onDelete: EventEmitter<Animal> = new EventEmitter();
 
-  formatDate: String = 'dd/MM/yyyy HH:mm';
+    edit(ev: Event) {
+        ev.preventDefault();
+        this.onEdit.emit(this.data);
+    }
 
-  delete(ev: Event) {
-    //alert('delete');
-    ev.preventDefault();
-    this.onDelete.emit(this.data);
-  }
+    delete(ev: Event) {
+        //alert('delete');
+        ev.preventDefault();
+        this.onDelete.emit(this.data);
+    }
 }

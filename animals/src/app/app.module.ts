@@ -40,7 +40,7 @@ import { API_URL_OPAQUE } from "./config";
         // In this way we can use interfaces to easily update our service definitions
         //{ provide: LoggerService, useClass: ConsoleLoggerService },
         //{ provide: LoggerService, useClass: FileLoggerService },
-        { provide: API_URL_OPAQUE, useValue: 'http://192.168.100.52:3000/api/animal' },
+        { provide: API_URL_OPAQUE, useValue: 'http://192.168.100.52:3000/api' },
     ],
 bootstrap: [AppComponent]
 })

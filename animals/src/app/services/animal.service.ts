@@ -3,16 +3,16 @@
  */
 
 import { Injectable, Inject } from "@angular/core";
-import { Http } from "@angular/http";
+import { Http, Response } from "@angular/http";
+import 'rxjs';
 
 import { API_URL_OPAQUE } from "../config";
 
 import { Animal } from "../models/animal.model";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class AnimalService {
-
-    private lastId: number = 3;
 
     animals: Animal[] = [
         new Animal(1, 'Sansón', 'Perrete', new Date('2015/01/01')),
@@ -24,9 +24,10 @@ export class AnimalService {
         console.log(apiUrl);
     }
 
-    getAll() {
-        //return this.http.get(`${ this.apiUrl }/animal`)
-        return this.animals;
+    getAll(): Observable<Animal[]> {
+        // http.get() returns an Observable object, which we can subscribe to
+        // With 'rxjs' we can add more functionality to Observable objects
+        return this.http.get(`${ this.apiUrl }/animal`).map( (data: Response) => data.json() );
     }
 
     get(id: number) {
@@ -34,20 +35,23 @@ export class AnimalService {
     }
 
     create(animal: Animal) {
-        animal.id = ++this.lastId;
-        this.animals.push(animal);
+        return this.http.post(`${this.apiUrl}/animal`, animal);
     }
 
     update(id: number, animalUpdate: Animal) {
+        return this.http.put(`${this.apiUrl}/animal/${id}`, animalUpdate);
+        /*
         this.animals = this.animals.map((animal) => {
             if (animal.id === id) {
                 Object.assign(animal, animalUpdate);
             }
             return animal;
-        })
+        });
+        */
     }
 
     delete(id: number) {
-        this.animals = this.animals.filter( (animal) => animal.id !== id );
+        return this.http.delete(`${this.apiUrl}/animal/${id}`);
+        //this.animals = this.animals.filter( (animal) => animal.id !== id );
     }
 }
