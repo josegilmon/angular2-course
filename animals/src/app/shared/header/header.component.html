@@ -1,0 +1,16 @@
+
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+    <a class="navbar-brand" routerLink="/animal">Animals</a>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" routerLink="/animal">Home</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" routerLink="/animal/create">Create</a>
+            </li>
+        </ul>
+        <button (click)="doUser()">User</button>
+        <button (click)="doAdmin()">Admin</button>
+    </div>
+</nav>

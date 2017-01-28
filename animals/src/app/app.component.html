@@ -1,24 +1,4 @@
 
-<!--animal-form></animal-form-->
-<animal-form-reactive (onSave)="onSave($event)" [data]="animalEdit"></animal-form-reactive>
+<app-header></app-header>
 
-<div class="card-deck">
-    <animal *ngFor="let animal of animals;" [data]="animal" (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></animal>
-</div>
-
-<!--table class="table">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Name</th>
-      <th>Age</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let animal of animals | async; let i = index; let odd = odd;" [class.impar]="odd" [class.par]="!odd">
-      <td>{{i+1}}</td>
-      <td>{{animal.name}}</td>
-      <td>{{animal.age}}</td>
-    </tr>
-  </tbody>
-</table-->
+<router-outlet></router-outlet>

@@ -2,26 +2,49 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './shared/header/header.component';
 import { AnimalComponent } from './shared/animal/animal.component';
 import { AnimalFormComponent } from "./shared/animal-form/animal-form.component";
 import { AnimalFormReactiveComponent } from "./shared/animal-form-reactive/animal-form-reactive.component";
+import { AnimalListComponent } from './pages/animal/list/animal-list.component';
+import { AnimalCreateComponent } from './pages/animal/create/animal-create.component';
+import { NotAuthorizedComponent } from './shared/not-authorized/not-authorized.component';
 
 import { HighLightDirective } from './shared/highlight.direcive';
 
 import { LimitTextPipe } from "./shared/limit-text.pipe";
 
+import { AuthGuard } from './guards/auth.guard';
+import { ExitCanDeactivateGuard } from './guards/exit.guard';
+import { AuthService } from './services/auth.service';
 import { AnimalService } from "./services/animal.service";
+
 import { API_URL_OPAQUE } from "./config";
+
+const appRoutes: Routes = [
+    { path: '', redirectTo: 'animal/list', pathMatch: 'full' },
+    { path: 'animal', redirectTo: 'animal/list', pathMatch: 'full' },
+    { path: 'animal/list', component: AnimalListComponent },
+    { path: 'animal/create', component: AnimalCreateComponent, canActivate: [AuthGuard], canDeactivate: [ExitCanDeactivateGuard] },
+    { path: 'animal/edit/:id', component: AnimalCreateComponent, canActivate: [AuthGuard], canDeactivate: [ExitCanDeactivateGuard] },
+    { path: 'not-authorized', component: NotAuthorizedComponent },
+    { path: '**', redirectTo: 'animal/list' }
+];
 
 @NgModule({
     declarations: [
         AppComponent,
+        HeaderComponent,
         AnimalComponent,
         AnimalFormComponent,
         AnimalFormReactiveComponent,
+        AnimalCreateComponent,
+        AnimalListComponent,
+        NotAuthorizedComponent,
         HighLightDirective,
         LimitTextPipe
     ],
@@ -30,9 +53,13 @@ import { API_URL_OPAQUE } from "./config";
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-        NgbModule.forRoot()
+        NgbModule.forRoot(),
+        RouterModule.forRoot(appRoutes)
     ],
     providers: [
+        AuthGuard,
+        ExitCanDeactivateGuard,
+        AuthService,
         // There is three ways to declare a service
         AnimalService,
         //{ provide: AnimalService, useClass: AnimalService },    // Uses a new instance of AnimalService
@@ -40,7 +67,7 @@ import { API_URL_OPAQUE } from "./config";
         // In this way we can use interfaces to easily update our service definitions
         //{ provide: LoggerService, useClass: ConsoleLoggerService },
         //{ provide: LoggerService, useClass: FileLoggerService },
-        { provide: API_URL_OPAQUE, useValue: 'http://192.168.100.52:3000/api' },
+        { provide: API_URL_OPAQUE, useValue: 'http://45.32.235.206:3000/api' },
     ],
 bootstrap: [AppComponent]
 })

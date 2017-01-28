@@ -19,7 +19,7 @@ import { Animal } from "../../models/animal.model";
 })
 export class AnimalFormReactiveComponent implements OnInit, OnChanges {
 
-    types: string[] = ['Perrete', 'Gatico', 'Pez', 'Otro'];
+    types: string[] = ['Cat', 'Dog', 'Snake', 'Perrete', 'Gatico', 'Pez', 'Otro'];
     animal: Animal = new Animal(0, 'Fresquita', 'http://www.focaswiki.com/Imagenes/adorable-bebe-foca.jpg', new Date('2016-05-07'), 'Otro');
 
     form: FormGroup;
@@ -47,7 +47,7 @@ export class AnimalFormReactiveComponent implements OnInit, OnChanges {
         }
 
         this.form = this.formBuilder.group({
-            name: [this.data ? this.data.name : 'Fresquita', [Validators.required, Validators.minLength(5)]],
+            name: [this.data ? this.data.name : 'Frozen', [Validators.required, Validators.minLength(5)]],
             image: [this.data ? this.data.image : 'http://www.focaswiki.com/Imagenes/adorable-bebe-foca.jpg', Validators.required],
             type: [this.data ? this.data.type : 'Otro', Validators.required],
             birthDate: [date]
