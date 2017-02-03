@@ -1,13 +1,15 @@
 /**
- * Created by jagil on 27/01/2017.
+ * Created by Jose A. Gil on 27/01/2017.
  */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Animal } from '../../../models/animal.model';
-import { AnimalService } from '../../../services/animal.service';
+import { AnimalAction } from '../../../actions/animal.action';
+import { State } from '../../../reducers/index';
 
 @Component({
     selector: 'animal-list',
@@ -16,23 +18,18 @@ import { AnimalService } from '../../../services/animal.service';
 export class AnimalListComponent implements OnInit, OnDestroy {
 
     animals: Animal[];
+    animals$: Observable<Animal[]>;
     animalsSubscription: Subscription;
 
-    constructor(private animalService: AnimalService, private router: Router, private route: ActivatedRoute ) {
-        this.updateAnimals();
-    }
+    constructor(private animalAction: AnimalAction, private store: Store<State>, private router: Router, private route: ActivatedRoute ) {}
 
     ngOnInit() {
-        this.updateAnimals();
+        this.animalAction.getAnimals();
+        this.animals$ = this.store.select( (state: State) => state.animals.entities );
     }
 
     ngOnDestroy() {
         this.animalsSubscription && this.animalsSubscription.unsubscribe();
-    }
-
-    updateAnimals() {
-        this.ngOnDestroy();
-        this.animalsSubscription = this.animalService.getAll().subscribe( data => this.animals = data );
     }
 
     onEdit(animal: Animal) {
@@ -41,10 +38,16 @@ export class AnimalListComponent implements OnInit, OnDestroy {
     }
 
     onDelete(animal: Animal) {
-        this.animalService.delete(animal.id).subscribe( () => this.updateAnimals(), () => {
+        /*
+        this.animalAction.delete(animal.id).subscribe( () => this.updateAnimals(), () => {
             alert('Error removing animal');
             this.updateAnimals();
         });
+        */
+    }
+
+    onError() {
+
     }
 
 }

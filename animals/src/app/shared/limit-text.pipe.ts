@@ -1,5 +1,5 @@
 /**
- * Created by jagil on 20/01/2017.
+ * Created by Jose A. Gil on 20/01/2017.
  */
 
 import {Pipe, PipeTransform} from "@angular/core";

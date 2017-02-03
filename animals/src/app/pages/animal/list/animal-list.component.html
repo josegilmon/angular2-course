@@ -2,7 +2,7 @@
 <h1>List</h1>
 
 <div class="card-deck">
-    <animal *ngFor="let animal of animals;" [data]="animal" (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></animal>
+    <animal *ngFor="let animal of animals$ | async;" [data]="animal" (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></animal>
 </div>
 
 <!--table class="table">

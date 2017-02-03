@@ -1,5 +1,5 @@
 /**
- * Created by jagil on 21/01/2017.
+ * Created by Jose A. Gil on 21/01/2017.
  */
 
 import { Injectable, Inject } from "@angular/core";

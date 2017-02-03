@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { StoreModule } from '@ngrx/store';
+import { RouterStoreModule } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './shared/header/header.component';
@@ -23,7 +26,10 @@ import { ExitCanDeactivateGuard } from './guards/exit.guard';
 import { AuthService } from './services/auth.service';
 import { AnimalService } from "./services/animal.service";
 
+import { reducer } from './reducers/index';
+
 import { API_URL_OPAQUE } from "./config";
+import { AnimalAction } from './actions/animal.action';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'animal/list', pathMatch: 'full' },
@@ -53,8 +59,11 @@ const appRoutes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
+        RouterModule.forRoot(appRoutes),
         NgbModule.forRoot(),
-        RouterModule.forRoot(appRoutes)
+        StoreModule.provideStore(reducer),
+        RouterStoreModule.connectRouter(),
+        StoreDevtoolsModule.instrumentOnlyWithExtension()
     ],
     providers: [
         AuthGuard,
@@ -68,6 +77,7 @@ const appRoutes: Routes = [
         //{ provide: LoggerService, useClass: ConsoleLoggerService },
         //{ provide: LoggerService, useClass: FileLoggerService },
         { provide: API_URL_OPAQUE, useValue: 'http://45.32.235.206:3000/api' },
+        AnimalAction
     ],
 bootstrap: [AppComponent]
 })

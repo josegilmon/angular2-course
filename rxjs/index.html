@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RxJs Example</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div>
+        <button id="lang1">Vote JS +</button>
+        <button id="lang2">Vote Java +</button>
+        <button id="lang3">Vote Ruby +</button>
+    </div>
+
+    <ul id="list">
+    </ul>
+
+    <script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.12/dist/global/Rx.js"></script>
+    <script type="text/javascript">
+
+        let languages = [
+            {
+                name: 'JavaScript',
+                votes: 0
+            },
+            {
+                name: 'Java',
+                votes: 0
+            },
+            {
+                name: 'Ruby',
+                votes: 0
+            }
+        ];
+
+        repaint();
+
+        let stream1 = increment(document.querySelector('#lang1'), 'JavaScript');
+        let stream2 = increment(document.querySelector('#lang2'), 'Java');
+        let stream3 = increment(document.querySelector('#lang3'), 'Ruby');
+
+        Rx.Observable.merge(stream1, stream2, stream3).subscribe( repaint );
+
+        /*************
+         * Functions *
+         *************/
+        function repaint() {
+            let list = languages
+                .sort( (a, b) => b.votes - a.votes )
+                .map( lang => `<li>(${lang.votes}) ${lang.name}</li>` );
+
+            document.querySelector('#list').innerHTML = list.join('');
+        }
+
+        function increment(button, language) {
+
+            let button$ = Rx.Observable.fromEvent(button, 'click');
+
+            let length$ = button$.buffer(button$.debounceTime(250)).map( list => list.length );
+
+            let increment$ = length$.filter( length => length === 1 ).map( () => {
+                languages = languages.map( lang => {
+                    if (lang.name == language) lang.votes++;
+                    return lang;
+                });
+            });
+
+            let decrement$ = length$.filter( length => length === 2 ).map( () => {
+                languages = languages.map( lang => {
+                    if (lang.name == language) lang.votes--;
+                    return lang;
+                });
+            });
+
+            // Con esta acción no necesitamos repintar la lista de votos, de modo que no es necesario añadirlo al merge
+            // En cambio, es necesario hacer un subscribe para que se pueda ejecutar la acción, en este caso el 'alert'
+            length$.filter( length => length > 2 ).subscribe( () => alert('Incorrect number of clicks, only 1 or 2 are supported.') );
+
+            return Rx.Observable.merge(increment$, decrement$);
+        }
+
+    </script>
+</body>
+</html>
