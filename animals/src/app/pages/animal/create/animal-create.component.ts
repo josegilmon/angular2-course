@@ -4,10 +4,13 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { Animal } from '../../../models/animal.model';
-import { AnimalService } from '../../../services/animal.service';
+import { AnimalAction } from '../../../actions/animal.action';
+import { Store } from '@ngrx/store';
+import { State } from '../../../reducers/index';
+import { AnimalSelector } from '../../../selectors/animal.selector';
 
 @Component({
     selector: 'animal-create',
@@ -20,23 +23,15 @@ export class AnimalCreateComponent implements OnInit, OnDestroy {
     animalEdit: Animal;
     animalSubscription: Subscription;
 
-    constructor(private animalService: AnimalService, private router: Router, private route: ActivatedRoute) {
-        /*
-        this.route.params.subscribe( (params: any) => {
-            if (params && params.id) {
-                this.animalService.get(params.id).subscribe( data => this.animalEdit = data );
-            }
-        });
-        */
-        this.animalSubscription = this.route.params.map( (params: any) => {
-            if (params && params.id) {
-                return this.animalService.get(+params.id);
-            }
-            return Observable.of(null);
-        }).switch().subscribe( obj => this.animalEdit = obj );
-    }
+    constructor(private router: Router, private route: ActivatedRoute, private store: Store<State>, private animalAction: AnimalAction, private animalSelector: AnimalSelector) {}
 
     ngOnInit() {
+        this.route.params.subscribe( (params: any) => {
+            if (params.id) {
+                this.animalAction.getAnimal(+params.id);
+            }
+        })
+        this.animalSelector.getAnimalEdit().subscribe( animalEdit => this.animalEdit = animalEdit );
     }
 
     ngOnDestroy() {
@@ -47,18 +42,17 @@ export class AnimalCreateComponent implements OnInit, OnDestroy {
         this.router.navigate(['./list']);
     }
 
-    onSave(animal: Animal) {
+    onSave(animal: any) {
+        this.allowExit = true;
         if (animal.bornDate) {
-
+            //animal.bornDate = new Date(animal.bornDate.year, animal.bornDate.month - 1, animal.bornDate.date);
         }
         if (this.animalEdit) {
-            this.animalService.update(this.animalEdit.id, animal).subscribe(() => this.back(), () => {
-                alert('Error updating animal');
-            });
+            this.animalAction.updateAnimal(this.animalEdit.id, animal);
+            //this.animalService.update(this.animalEdit.id, animal).subscribe(() => this.back(), () => { alert('Error updating animal'); });
         } else {
-            this.animalService.create(animal).subscribe(() => this.back(), () => {
-                alert('Error saving animal');
-            });
+            this.animalAction.createAnimal(animal);
+            //this.animalService.create(animal).subscribe(() => this.back(), () => { alert('Error saving animal'); });
         }
     }
 

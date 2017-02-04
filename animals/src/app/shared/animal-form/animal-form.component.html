@@ -49,15 +49,15 @@
             <button (click)="show(myInput.value)">Click</button>
             <span>{{myInput?.value}}</span-->
             <label>Birth date</label>
-            <input id="birthDate"
-                   name="birthDate"
+            <input id="bornDate"
+                   name="bornDate"
                    class="form-control"
                    placeholder="yyyy-mm-dd"
                    [ngModel]="animal?.bornDate"
                    ngbDatepicker
-                   #birthDateRef="ngbDatepicker"
+                   #bornDateRef="ngbDatepicker"
             >
-            <div class="input-group-addon" (click)="birthDateRef.toggle()" >
+            <div class="input-group-addon" (click)="bornDateRef.toggle()" >
                 <img src="https://ng-bootstrap.github.io/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
             </div>
         </div>

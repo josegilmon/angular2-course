@@ -21,7 +21,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
     animals$: Observable<Animal[]>;
     animalsSubscription: Subscription;
 
-    constructor(private animalAction: AnimalAction, private store: Store<State>, private router: Router, private route: ActivatedRoute ) {}
+    constructor(private store: Store<State>, private router: Router, private route: ActivatedRoute, private animalAction: AnimalAction) {}
 
     ngOnInit() {
         this.animalAction.getAnimals();
@@ -38,16 +38,10 @@ export class AnimalListComponent implements OnInit, OnDestroy {
     }
 
     onDelete(animal: Animal) {
-        /*
-        this.animalAction.delete(animal.id).subscribe( () => this.updateAnimals(), () => {
-            alert('Error removing animal');
-            this.updateAnimals();
-        });
-        */
+        this.animalAction.deleteAnimal(animal.id);
     }
 
     onError() {
-
     }
 
 }

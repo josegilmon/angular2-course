@@ -50,7 +50,7 @@ export class AnimalFormReactiveComponent implements OnInit, OnChanges {
             name: [this.data ? this.data.name : 'Frozen', [Validators.required, Validators.minLength(5)]],
             image: [this.data ? this.data.image : 'http://www.focaswiki.com/Imagenes/adorable-bebe-foca.jpg', Validators.required],
             type: [this.data ? this.data.type : 'Otro', Validators.required],
-            birthDate: [date]
+            bornDate: [date]
         });
     }
 

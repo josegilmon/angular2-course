@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
@@ -30,6 +30,10 @@ import { reducer } from './reducers/index';
 
 import { API_URL_OPAQUE } from "./config";
 import { AnimalAction } from './actions/animal.action';
+import { AnimalSelector } from './selectors/animal.selector';
+import { NotificationAction } from './actions/notification.action';
+import { NotificationComponent } from './shared/notification.component';
+import { TabComponent } from './shared/tab.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'animal/list', pathMatch: 'full' },
@@ -51,6 +55,8 @@ const appRoutes: Routes = [
         AnimalCreateComponent,
         AnimalListComponent,
         NotAuthorizedComponent,
+        NotificationComponent,
+        TabComponent,
         HighLightDirective,
         LimitTextPipe
     ],
@@ -66,9 +72,6 @@ const appRoutes: Routes = [
         StoreDevtoolsModule.instrumentOnlyWithExtension()
     ],
     providers: [
-        AuthGuard,
-        ExitCanDeactivateGuard,
-        AuthService,
         // There is three ways to declare a service
         AnimalService,
         //{ provide: AnimalService, useClass: AnimalService },    // Uses a new instance of AnimalService
@@ -76,9 +79,15 @@ const appRoutes: Routes = [
         // In this way we can use interfaces to easily update our service definitions
         //{ provide: LoggerService, useClass: ConsoleLoggerService },
         //{ provide: LoggerService, useClass: FileLoggerService },
-        { provide: API_URL_OPAQUE, useValue: 'http://45.32.235.206:3000/api' },
-        AnimalAction
+        AuthService,
+        AuthGuard,
+        ExitCanDeactivateGuard,
+        AnimalAction,
+        AnimalSelector,
+        NotificationAction,
+        { provide: API_URL_OPAQUE, useValue: 'http://45.32.235.206:3000/api' }
     ],
-bootstrap: [AppComponent]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

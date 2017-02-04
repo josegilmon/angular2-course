@@ -38,11 +38,11 @@ export class AnimalService {
     }
 
     create(animal: Animal) {
-        return this.http.post(`${this.apiUrl}/animal`, animal);
+        return this.http.post(`${this.apiUrl}/animal`, animal).map( (data: Response) => data.json() );
     }
 
     update(id: number, animalUpdate: Animal) {
-        return this.http.put(`${this.apiUrl}/animal/${id}`, animalUpdate);
+        return this.http.put(`${this.apiUrl}/animal/${id}`, animalUpdate).map( (data: Response) => data.json() );
         /*
         this.animals = this.animals.map((animal) => {
             if (animal.id === id) {
